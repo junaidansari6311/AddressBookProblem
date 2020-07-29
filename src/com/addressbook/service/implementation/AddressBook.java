@@ -4,9 +4,7 @@ import com.addressbook.exception.AddressBookException;
 import com.addressbook.model.Person;
 import com.addressbook.service.IAddressBook;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class AddressBook implements IAddressBook {
@@ -100,6 +98,14 @@ public class AddressBook implements IAddressBook {
                 .findFirst().orElseThrow(() -> new AddressBookException("Person not found - " + name));
         personList.remove(index);
         System.out.println("Record Deleted...");
+    }
+
+    @Override
+    public void sortByName() {
+        if (personList.size()==0){
+            throw new AddressBookException("No records found to sort");
+        }
+        Collections.sort(personList,(person1,person2) -> person1.getFirstName().compareTo(person2.getFirstName()));
     }
 
     @Override
