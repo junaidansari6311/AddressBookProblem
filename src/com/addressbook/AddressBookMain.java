@@ -11,7 +11,8 @@ public class AddressBookMain {
         Scanner sc = new Scanner(System.in);
         String continueOrExit;
         do {
-            System.out.println("To Add a Person,Enter 1 : \nTo Edit person details,Enter 2 : ");
+            System.out.println("To Add a Person,Enter 1 : \nTo Edit person details,Enter 2 : " +
+                    "\nTo Delete person details,Enter 3");
             int choice = sc.nextInt();
             switch (choice){
                 case 1:
@@ -19,6 +20,9 @@ public class AddressBookMain {
                     break;
                 case 2:
                     addressBook.editPerson();
+                    break;
+                case 3:
+                    addressBook.deletePerson();
                     break;
                 default:
                     System.out.println("You have entered invalid option");

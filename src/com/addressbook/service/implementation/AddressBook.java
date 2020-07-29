@@ -80,4 +80,18 @@ public class AddressBook implements IAddressBook {
             personList.add(person);
         }
     }
+
+    @Override
+    public void deletePerson() {
+        if(personList.size() == 0){
+            throw new AddressBookException("No records found");
+        }
+        System.out.println("Enter person name to delete a record :");
+        String name = sc.next();
+        int index = IntStream.range(0, personList.size())
+                .filter(i -> name.equals(personList.get(i).getFirstName()))
+                .findFirst().orElseThrow(() -> new AddressBookException("Person not found - " + name));
+        personList.remove(index);
+        System.out.println("Record Deleted...");
+    }
 }
