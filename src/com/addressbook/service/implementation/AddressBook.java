@@ -5,6 +5,7 @@ import com.addressbook.model.Person;
 import com.addressbook.service.IAddressBook;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
@@ -18,8 +19,14 @@ public class AddressBook implements IAddressBook {
     public void addPerson() {
         System.out.println("Enter first name : ");
         String fName = sc.next();
-        person.setFirstName(fName);
 
+        int index = IntStream.range(0, personList.size())
+                .filter(i -> fName.equals(personList.get(i).getFirstName()))
+                .findFirst().orElse(-1);
+        if(index==0) {
+            throw new AddressBookException("Duplicate entry is not allowed");
+        }
+        person.setFirstName(fName);
         System.out.println("Enter last name :");
         String lName = sc.next();
         person.setLastName(lName);
@@ -44,7 +51,7 @@ public class AddressBook implements IAddressBook {
         long phoneNo = sc.nextLong();
         person.setPhoneNumber(phoneNo);
         personList.add(person);
-        System.out.println("Person details are being added.");
+        System.out.println("Person details are being added...");
     }
 
     @Override
@@ -93,5 +100,13 @@ public class AddressBook implements IAddressBook {
                 .findFirst().orElseThrow(() -> new AddressBookException("Person not found - " + name));
         personList.remove(index);
         System.out.println("Record Deleted...");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AddressBook that = (AddressBook) o;
+        return Objects.equals(person, that.person);
     }
 }
