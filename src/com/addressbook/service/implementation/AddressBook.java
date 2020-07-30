@@ -109,6 +109,30 @@ public class AddressBook implements IAddressBook {
     }
 
     @Override
+    public void sortByCity() {
+        if (personList.size()==0){
+            throw new AddressBookException("No records found to sort");
+        }
+        Collections.sort(personList,(person1,person2) -> person1.getCity().compareTo(person2.getCity()));
+    }
+
+    @Override
+    public void sortByState() {
+        if (personList.size() == 0) {
+            throw new AddressBookException("No records found to sort");
+        }
+        Collections.sort(personList, (person1, person2) -> person1.getState().compareTo(person2.getState()));
+    }
+
+    @Override
+    public void sortByZip() {
+        if (personList.size()==0){
+            throw new AddressBookException("No records found to sort");
+        }
+        Collections.sort(personList,(person1,person2) -> String.valueOf(person1.getZip()).compareTo(String.valueOf(person2.getZip())));
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

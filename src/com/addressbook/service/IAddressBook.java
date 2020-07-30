@@ -5,4 +5,7 @@ public interface IAddressBook {
     void editPerson();
     void deletePerson();
     void sortByName();
+    void sortByCity();
+    void sortByState();
+    void sortByZip();
 }
