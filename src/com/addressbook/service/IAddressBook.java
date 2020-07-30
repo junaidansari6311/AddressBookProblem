@@ -9,4 +9,5 @@ public interface IAddressBook {
     void sortByState();
     void sortByZip();
     void viewByCityAndState();
+    void viewByCityOrState();
 }

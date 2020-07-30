@@ -14,7 +14,7 @@ public class AddressBookMain {
             System.out.println("To Add a Person,Enter 1 : \nTo Edit person details,Enter 2 : " +
                     "\nTo Delete person details,Enter 3 : \nTo Sort person details by name,Enter 4 : \n" +
                     "To Sort Person by city,Enter 5 : \nTo Sort Person by state,Enter 6 : \nTo Sort Person by zip,Enter 7 : " +
-                    "\nTo Person by City and State,Enter 8");
+                    "\nTo view Person by City AND State,Enter 8 : \nTo view Person by City OR State,Enter 9 : ");
             int choice = sc.nextInt();
             switch (choice){
                 case 1:
@@ -40,6 +40,9 @@ public class AddressBookMain {
                     break;
                 case 8:
                     addressBook.viewByCityAndState();
+                    break;
+                case 9:
+                    addressBook.viewByCityOrState();
                     break;
                 default:
                     System.out.println("You have entered invalid option");
