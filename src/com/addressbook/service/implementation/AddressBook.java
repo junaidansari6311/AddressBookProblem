@@ -133,6 +133,22 @@ public class AddressBook implements IAddressBook {
     }
 
     @Override
+    public void viewByCityAndState() {
+        System.out.println("Enter city:");
+        String viewCity = sc.next();
+        System.out.println("Enter state:");
+        String viewState = sc.next();
+        int index = IntStream.range(0, personList.size())
+                .filter(i -> viewCity.equals(personList.get(i).getCity())).filter(i -> viewState.equals(personList.get(i).getState()))
+                .findFirst().orElseThrow(() -> new AddressBookException("No record found "));
+        for (Person p:personList) {
+            System.out.println(personList.get(index).getFirstName()+" "+personList.get(index).getLastName()+" "+
+                    personList.get(index).getCity()+" "+personList.get(index).getState());
+        }
+
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
