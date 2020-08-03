@@ -1,8 +1,7 @@
 package com.addressbook;
 
-import com.addressbook.service.implementation.AddressBook;
+import com.addressbook.service.implementation.*;
 import java.util.Scanner;
-
 public class AddressBookMain {
 
     public static void main(String[] args) {

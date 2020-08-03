@@ -4,14 +4,26 @@ import com.addressbook.exception.AddressBookException;
 import com.addressbook.model.Person;
 import com.addressbook.service.IAddressBook;
 
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.IntStream;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AddressBook implements IAddressBook {
 
     Scanner sc  = new Scanner(System.in);
     public static ArrayList<Person> personList = new ArrayList<>();
     Person person = new Person();
+    ObjectMapper objectMapper= new ObjectMapper();
+
+    public void writeToJsonFile(){
+        try {
+            objectMapper.writeValue(Paths.get("person.json").toFile(),person);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
     @Override
     public void addPerson() {
@@ -50,6 +62,7 @@ public class AddressBook implements IAddressBook {
         long phoneNo = sc.nextLong();
         person.setPhoneNumber(phoneNo);
         personList.add(person);
+        writeToJsonFile();
         System.out.println("Person details are being added...");
     }
 
@@ -84,6 +97,7 @@ public class AddressBook implements IAddressBook {
             long phoneNo = sc.nextLong();
             personList.get(index).setPhoneNumber(phoneNo);
             personList.add(person);
+            writeToJsonFile();
         }
     }
 
@@ -163,6 +177,7 @@ public class AddressBook implements IAddressBook {
                     personList.get(index).getPhoneNumber());
         }
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
