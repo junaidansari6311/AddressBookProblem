@@ -4,6 +4,8 @@ import com.addressbook.exception.AddressBookException;
 import com.addressbook.model.Person;
 import com.addressbook.service.IAddressBook;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.IntStream;
@@ -22,6 +24,15 @@ public class AddressBook implements IAddressBook {
             objectMapper.writeValue(Paths.get("person.json").toFile(),person);
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public void readFromJsonFile(){
+        try {
+            Person person1 = objectMapper.readValue(new File("person.json"),Person.class);
+            System.out.println(person1);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -71,6 +82,7 @@ public class AddressBook implements IAddressBook {
         if(personList.size() == 0){
             throw new AddressBookException("No records found");
         }
+        readFromJsonFile();
         System.out.println("Enter person name to edit :");
         String name = sc.next();
         int index = IntStream.range(0, personList.size())
@@ -106,6 +118,7 @@ public class AddressBook implements IAddressBook {
         if(personList.size() == 0){
             throw new AddressBookException("No records found");
         }
+        readFromJsonFile();
         System.out.println("Enter person name to delete a record :");
         String name = sc.next();
         int index = IntStream.range(0, personList.size())
