@@ -4,24 +4,25 @@ import com.addressbook.exception.AddressBookException;
 import com.addressbook.model.Person;
 import com.addressbook.service.IAddressBook;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
+import java.io.*;
 import java.util.*;
 import java.util.stream.IntStream;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class AddressBook implements IAddressBook {
 
     Scanner sc  = new Scanner(System.in);
     public static ArrayList<Person> personList = new ArrayList<>();
     Person person = new Person();
-    ObjectMapper objectMapper= new ObjectMapper();
+    Gson gson = new Gson();
 
     public void writeToJsonFile(){
         try {
-            objectMapper.writeValue(Paths.get("person.json").toFile(),person);
+            Writer writer = new FileWriter("person.json");
+            new Gson().toJson(personList, writer);
+            writer.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -29,7 +30,7 @@ public class AddressBook implements IAddressBook {
 
     public void readFromJsonFile(){
         try {
-            Person person1 = objectMapper.readValue(new File("person.json"),Person.class);
+            ArrayList<Person> person1 = gson.fromJson(new FileReader("person.json"),new TypeToken<ArrayList<Person>>() {}.getType());
             System.out.println(person1);
         } catch (IOException e) {
             e.printStackTrace();
