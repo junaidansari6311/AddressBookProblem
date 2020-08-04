@@ -21,6 +21,8 @@ public class AddressBook implements IAddressBook {
     public void addPerson() {
         System.out.println("Enter first name : ");
         String fName = Utility.stringInput();
+        if(!Utility.inputValidation(fName, Utility.NAME_PATTERN))
+            throw new AddressBookException("Please enter valid Last Name");
 
         int index =
                 IntStream.range(0, personList.size())
@@ -32,6 +34,8 @@ public class AddressBook implements IAddressBook {
         person.setFirstName(fName);
         System.out.println("Enter last name :");
         String lName = Utility.stringInput();
+        if(!Utility.inputValidation(lName, Utility.NAME_PATTERN))
+            throw new AddressBookException("Please enter valid Last Name");
         person.setLastName(lName);
 
         Person personDetails = Utility.getPersonDetails(person);
@@ -50,6 +54,7 @@ public class AddressBook implements IAddressBook {
         operations.readData();
         System.out.println("Enter person name to edit :");
         String name = Utility.stringInput();
+
         int index = IntStream.range(0, personList.size())
                 .filter(i -> name.equals(personList.get(i).getFirstName()))
                 .findFirst().orElseThrow(() -> new AddressBookException("Person not found - " + name));
@@ -76,44 +81,41 @@ public class AddressBook implements IAddressBook {
         System.out.println("Record Deleted...");
     }
 
-    @Override
-    public void sortByName() {
+    public void sortByField(String field){
         if (personList.size()==0){
             throw new AddressBookException("No records found to sort");
         }
-        Collections.sort(personList,(person1,person2) -> person1.getFirstName().compareTo(person2.getFirstName()));
-    }
-
-    @Override
-    public void sortByCity() {
-        if (personList.size()==0){
-            throw new AddressBookException("No records found to sort");
+        switch(field){
+            case "name" :
+                Collections.sort(personList,(person1,person2) -> person1.getFirstName().compareTo(person2.getFirstName()));
+                break;
+            case "city" :
+                Collections.sort(personList,(person1,person2) -> person1.getCity().compareTo(person2.getCity()));
+                break;
+            case "state" :
+                Collections.sort(personList, (person1, person2) -> person1.getState().compareTo(person2.getState()));
+                break;
+            case "zip" :
+                Collections.sort(personList,(person1,person2) -> String.valueOf(person1.getZip()).compareTo(String.valueOf(person2.getZip())));
+                break;
+            default:
+                System.out.println("You have entered invalid field name");
+                break;
         }
-        Collections.sort(personList,(person1,person2) -> person1.getCity().compareTo(person2.getCity()));
-    }
-
-    @Override
-    public void sortByState() {
-        if (personList.size() == 0) {
-            throw new AddressBookException("No records found to sort");
-        }
-        Collections.sort(personList, (person1, person2) -> person1.getState().compareTo(person2.getState()));
-    }
-
-    @Override
-    public void sortByZip() {
-        if (personList.size()==0){
-            throw new AddressBookException("No records found to sort");
-        }
-        Collections.sort(personList,(person1,person2) -> String.valueOf(person1.getZip()).compareTo(String.valueOf(person2.getZip())));
     }
 
     @Override
     public void viewByCityAndState() {
         System.out.println("Enter city:");
         String viewCity = Utility.stringInput();
+        if(!Utility.inputValidation(viewCity, Utility.NAME_PATTERN))
+            throw new AddressBookException("Please enter valid City");
+
         System.out.println("Enter state:");
         String viewState = Utility.stringInput();
+        if(!Utility.inputValidation(viewState, Utility.NAME_PATTERN))
+            throw new AddressBookException("Please enter valid State");
+
         int index = IntStream.range(0, personList.size())
                 .filter(i -> viewCity.equals(personList.get(i).getCity()) && (viewState.equals(personList.get(i).getState())))
                 .findFirst().orElseThrow(() -> new AddressBookException("No record found "));
@@ -124,6 +126,8 @@ public class AddressBook implements IAddressBook {
     public void viewByCityOrState() {
         System.out.println("Enter city OR state : ");
         String viewCityOrState = Utility.stringInput();
+        if(!Utility.inputValidation(viewCityOrState, Utility.NAME_PATTERN))
+            throw new AddressBookException("Please enter valid City or State");
         int index = IntStream.range(0, personList.size())
                 .filter(i -> viewCityOrState.equals(personList.get(i).getCity()) || (viewCityOrState.equals(personList.get(i).getState())))
                 .findFirst().orElseThrow(() -> new AddressBookException("No record found "));

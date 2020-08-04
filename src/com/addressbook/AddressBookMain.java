@@ -10,10 +10,10 @@ public class AddressBookMain {
         Scanner sc = new Scanner(System.in);
         String continueOrExit;
         do {
-            System.out.println("To Add a Person,Enter 1 : \nTo Edit person details,Enter 2 : " +
-                    "\nTo Delete person details,Enter 3 : \nTo Sort person details by name,Enter 4 : \n" +
-                    "To Sort Person by city,Enter 5 : \nTo Sort Person by state,Enter 6 : \nTo Sort Person by zip,Enter 7 : " +
-                    "\nTo view Person by City AND State,Enter 8 : \nTo view Person by City OR State,Enter 9 : ");
+            System.out.println("Enter 1 To Add A Person : \nEnter 2 To Edit Person details : " +
+                    "\nEnter 3 To Delete Person details: \nEnter 4 To Sort person details by name : \n" +
+                    "Enter 5 To Sort Person by city : \nEnter 6 To Sort Person by state : \nEnter 7 To Sort Person by zip : " +
+                    "\nEnter 8 To view Person by City AND State : \nEnter 9 To view Person by City OR State : ");
             int choice = sc.nextInt();
             switch (choice){
                 case 1:
@@ -26,16 +26,16 @@ public class AddressBookMain {
                     addressBook.deletePerson();
                     break;
                 case 4:
-                    addressBook.sortByName();
+                    addressBook.sortByField("name");
                     break;
                 case 5:
-                    addressBook.sortByCity();
+                    addressBook.sortByField("city");
                     break;
                 case 6:
-                    addressBook.sortByState();
+                    addressBook.sortByField("state");
                     break;
                 case 7:
-                    addressBook.sortByZip();
+                    addressBook.sortByField("zip");
                     break;
                 case 8:
                     addressBook.viewByCityAndState();

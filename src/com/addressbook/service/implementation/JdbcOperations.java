@@ -2,6 +2,7 @@ package com.addressbook.service.implementation;
 
 import com.addressbook.model.Person;
 import com.addressbook.service.IJdbcOperations;
+import com.addressbook.utility.Utility;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,8 +13,7 @@ public class JdbcOperations implements IJdbcOperations {
     public void writeData(ArrayList<Person> personList){
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/addressbook", "root", "admin");
+            Connection connection = Utility.getConnectionObject();
             String insertsql="Insert into person (first_name ,last_name ,address ,city ,state ,zip ,phone_number) VALUES (?,?,?,?,?,?,?)";
             PreparedStatement ps=connection.prepareStatement(insertsql);
             Iterator<Person> it=personList.iterator();
@@ -32,8 +32,6 @@ public class JdbcOperations implements IJdbcOperations {
             ps.executeBatch();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -41,9 +39,7 @@ public class JdbcOperations implements IJdbcOperations {
     public void readData(){
         ArrayList<Person> personArrayList = new ArrayList<>();
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/addressbook";
-            Connection connection = DriverManager.getConnection(url, "root", "admin");
+            Connection connection = Utility.getConnectionObject();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select * from person");
             while (resultSet.next()) {
