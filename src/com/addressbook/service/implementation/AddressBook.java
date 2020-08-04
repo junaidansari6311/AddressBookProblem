@@ -66,7 +66,42 @@ public class AddressBook implements IAddressBook {
         }
     }
 
+    public void readData(){
+        ArrayList<Person> personArrayList = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/addressbook";
+            Connection connection = DriverManager.getConnection(url, "root", "admin");
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select * from person");
+            while (resultSet.next()) {
+                Person person = new Person();
+                person.setFirstName(resultSet.getString("first_name"));
+                person.setLastName(resultSet.getString("last_name"));
+                person.setAddress(resultSet.getString("address"));
+                person.setCity(resultSet.getString("city"));
+                person.setState(resultSet.getString("state"));
+                person.setZip(resultSet.getInt("zip"));
+                person.setPhoneNumber(resultSet.getLong("phone_number"));
+                personArrayList.add(person);
+            }
 
+            for (Person person : personArrayList) {
+                System.out.print("FirstName: "+person.getFirstName()+", ");
+                System.out.print("LastName: "+person.getLastName()+", ");
+                System.out.print("Address: "+person.getAddress()+", ");
+                System.out.print("City: "+person.getCity()+", ");
+                System.out.print("State: "+person.getState()+", ");
+                System.out.print("Zip: "+person.getZip()+", ");
+                System.out.print("PhoneNumber: "+person.getPhoneNumber());
+                System.out.println();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Got an exception! ");
+            System.err.println(e.getMessage());
+        }
+    }
 
     @Override
     public void addPerson() {
@@ -116,6 +151,7 @@ public class AddressBook implements IAddressBook {
             throw new AddressBookException("No records found");
         }
         readFromJsonFile();
+        readData();
         System.out.println("Enter person name to edit :");
         String name = sc.next();
         int index = IntStream.range(0, personList.size())
