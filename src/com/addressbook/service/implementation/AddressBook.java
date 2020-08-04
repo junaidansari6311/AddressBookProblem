@@ -5,6 +5,7 @@ import com.addressbook.model.Person;
 import com.addressbook.service.IAddressBook;
 
 import java.io.*;
+import java.sql.*;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -36,6 +37,36 @@ public class AddressBook implements IAddressBook {
             e.printStackTrace();
         }
     }
+
+    public void writeData(){
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/addressbook", "root", "admin");
+            String insertsql="Insert into person (first_name ,last_name ,address ,city ,state ,zip ,phone_number) VALUES (?,?,?,?,?,?,?)";
+            PreparedStatement ps=connection.prepareStatement(insertsql);
+            Iterator<Person> it=personList.iterator();
+            while(it.hasNext()){
+                Person person1=(Person) it.next();
+                ps.setString(1, person.getFirstName());
+                ps.setString(2, person.getLastName());
+                ps.setString(3, person.getAddress());
+                ps.setString(4, person.getCity());
+                ps.setString(5, person.getState());
+                ps.setInt(6,person.getZip());
+                ps.setLong(7,person.getPhoneNumber());
+
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @Override
     public void addPerson() {
@@ -75,6 +106,7 @@ public class AddressBook implements IAddressBook {
         person.setPhoneNumber(phoneNo);
         personList.add(person);
         writeToJsonFile();
+        writeData();
         System.out.println("Person details are being added...");
     }
 
